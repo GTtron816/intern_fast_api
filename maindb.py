@@ -1,4 +1,4 @@
-from fastapi import FastAPI,Body
+from fastapi import FastAPI
 import random
 import psycopg2
 import psycopg2.extras
