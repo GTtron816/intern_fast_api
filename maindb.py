@@ -27,23 +27,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-characters=[]
-def create_char():
-  item1 =	{
-  "cid":100,
-  "name": "Harry Potter",
-  "species": "Human",
-  "year": 1964,
-  "image":"https://ik.imagekit.io/hpapi/harry.jpg"}
-  item2 =	{
-  "cid":200,
-  "name": "Hermione Granger",
-  "species": "Human",
-  "year": 1954,
-  "image":"https://ik.imagekit.io/hpapi/hermione.jpeg"}
-  characters.append(item1)
-  characters.append(item2)
-create_char()
 
 @app.get('/')
 def get_user():
