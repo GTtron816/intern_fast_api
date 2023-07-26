@@ -5,24 +5,11 @@ from sqlalchemy.orm import Session
 import  models
 import schema
 
-from database import SessionLocal, engine
+from database import SessionLocal, engine,get_db
 
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
-
-
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-    # def __getitem__(self,item):
-    #     return getattr(self,item)
     
 app=FastAPI()
 origins = [

@@ -4,3 +4,4 @@ class Character(BaseModel):
     species:str
     year:int
     image:str
+    
