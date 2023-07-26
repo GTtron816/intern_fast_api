@@ -1,13 +1,12 @@
 from fastapi import FastAPI
-import random
-import psycopg2
-import psycopg2.extras
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 import  models
+import schema
+
 from database import SessionLocal, engine
+
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
@@ -21,11 +20,7 @@ def get_db():
     finally:
         db.close()
 
-class Character(BaseModel):
-    name:str
-    species:str
-    year:int
-    image:str
+
     # def __getitem__(self,item):
     #     return getattr(self,item)
     
@@ -46,25 +41,24 @@ app.add_middleware(
 @app.get('/')
 def get_user(db: Session = Depends(get_db)):
     characters=db.query(models.Characater).all()
-    print(characters)
-    return {"data":characters}
+    return characters
     
   
 
 @app.get('/{id}')
-def get_user(id:int):
-    pass
+def get_user(id:int,db: Session = Depends(get_db)):
+    characters=db.query(models.Characater).filter(models.Characater.cid == id).first()
+    return [characters]
  
         
 @app.post('/')
-def add_item(item:Character):
-    pass
-
-    
-
+def add_item(item:schema.Character,db: Session = Depends(get_db)):
+    new_character=models.Characater(**item.dict())
+    db.add(new_character)
+    db.commit()
 
 @app.put('/{id}')
-def update_item(id:int,item:Character):
-    pass
-     
+def update_item(id:int,item:schema.Character,db: Session = Depends(get_db)):
+    db.query(models.Characater).filter(models.Characater.cid == id).update({**item.dict()})
+    db.commit()
      
