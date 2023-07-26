@@ -44,8 +44,9 @@ def get_user(id:int):
 def add_item(item:Character):
     post_item=item.dict()
     post_item["cid"]=random.randint(0,10000)
-    cursor.execute("insert into characters values({},'{}','{}',{},'{}')".format(post_item["cid"],post_item["name"],post_item["species"],post_item["year"],post_item["image"]))
+    cursor.execute("insert into characters values({},'{}','{}',{},'{}') returning cid".format(post_item["cid"],post_item["name"],post_item["species"],post_item["year"],post_item["image"]))
     conn.commit()
+    return cursor.fetchone()
     
 
 
